@@ -14,7 +14,8 @@ namespace WebApiSample.Controllers
         {
             new Product { Id = 1, Name = "The Incredible Hulk", Category = "Movies", Price = 200},
             new Product { Id = 2, Name = "Pepsi 200 ML", Category = "Beverages", Price = 15},
-            new Product { Id = 3, Name = "MI Redmi 2",  Category = "Mobiles", Price = 6999 }
+            new Product { Id = 3, Name = "MI Redmi 2",  Category = "Mobiles", Price = 6999 },
+            new Product { Id = 4, Name = "Redmi MI 4i",  Category = "Mobiles", Price = 14999 }
         };
 
         public IEnumerable<Product> GetAllProducts()
