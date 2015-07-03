@@ -12,12 +12,9 @@ namespace WebApiSample.Controllers
 {
     public class ProductsController : ApiController
     {
-        Product[] _products = null;
-
         public IEnumerable<Product> GetAllProducts()
         {
-            readProductsFromSqlDb();
-            return _products;
+            return readProductsFromSqlDb();
         }
 
         public IHttpActionResult GetProduct(int id)
