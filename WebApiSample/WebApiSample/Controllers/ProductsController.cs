@@ -70,23 +70,28 @@ namespace WebApiSample.Controllers
 
         public HttpResponseMessage PostProduct(Product product)
         {
+            InsertProduct(product);
+            string apiName = WebApiConfig.DefaultRouteName;
+            var response = Request.CreateResponse<Product>(HttpStatusCode.Created, product);
+            var uri = Url.Link(apiName, new { id = product.Id });
+            response.Headers.Location = new Uri(uri);
+            return response;
+        }
+
+        private void InsertProduct(Product product)
+        {
             IDbConnection con = null;
 
             try
             {
                 con = openConnection();
                 var cmd = con.CreateCommand();
-                cmd.CommandText = string.Format("insert into products values (name='{0}',category='{1}',price={2})", product.Name, product.Category, product.Price);
+                cmd.CommandText = string.Format("insert into products values ('{0}','{1}',{2})", product.Name, product.Category, product.Price);
                 cmd.ExecuteNonQuery();
 
-                //cmd.CommandText = "select @@identity";
-                //product.Id = (int)cmd.ExecuteScalar();
-
-                string apiName = WebApiConfig.DefaultRouteName;
-                var response = Request.CreateResponse<Product>(HttpStatusCode.Created, product);
-                var uri = Url.Link(apiName, new { id = product.Id });
-                response.Headers.Location = new Uri(uri);
-                return response;
+                cmd.CommandText = "select @@identity";
+                var id = cmd.ExecuteScalar();
+                product.Id = Convert.ToInt32(id);
             }
             catch (Exception)
             {
