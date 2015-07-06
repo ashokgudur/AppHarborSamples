@@ -75,13 +75,12 @@ namespace WebApiSample.Controllers
             try
             {
                 con = openConnection();
-                //var cmd = con.CreateCommand();
-                //cmd.CommandText = string.Format("insert into products values (name='{0}',category='{1}',price={2})", product.Name, product.Category, product.Price);
-                //cmd.ExecuteNonQuery();
+                var cmd = con.CreateCommand();
+                cmd.CommandText = string.Format("insert into products values (name='{0}',category='{1}',price={2})", product.Name, product.Category, product.Price);
+                cmd.ExecuteNonQuery();
 
                 //cmd.CommandText = "select @@identity";
                 //product.Id = (int)cmd.ExecuteScalar();
-                //con.Close();
 
                 string apiName = WebApiConfig.DefaultRouteName;
                 var response = Request.CreateResponse<Product>(HttpStatusCode.Created, product);
@@ -105,7 +104,7 @@ namespace WebApiSample.Controllers
             throw new NotImplementedException();
         }
 
-        public  void DeleteProduct(int id)
+        public void DeleteProduct(int id)
         {
             throw new NotImplementedException();
         }
