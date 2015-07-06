@@ -31,7 +31,7 @@ namespace WebApiSample.Controllers
 
             if (product == null)
                 return NotFound();
-            
+
             return Ok(product);
         }
 
@@ -66,6 +66,48 @@ namespace WebApiSample.Controllers
                 Price = Convert.ToDecimal(rdr["price"])
             };
 
+        }
+
+        public HttpResponseMessage PostProduct(Product product)
+        {
+            IDbConnection con = null;
+
+            try
+            {
+                con = openConnection();
+                var cmd = con.CreateCommand();
+                cmd.CommandText = string.Format("insert into products values (name='{0}',category='{1}',price={2})", product.Name, product.Category, product.Price);
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "select @@identity";
+                product.Id = (int)cmd.ExecuteScalar();
+                con.Close();
+
+                string apiName = WebApiConfig.DefaultRouteName;
+                var response = Request.CreateResponse<Product>(HttpStatusCode.Created, product);
+                var uri = Url.Link(apiName, new { id = product.Id });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public bool PutProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public  void DeleteProduct(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
