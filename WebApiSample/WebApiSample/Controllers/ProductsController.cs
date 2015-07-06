@@ -74,7 +74,7 @@ namespace WebApiSample.Controllers
 
             try
             {
-                //con = openConnection();
+                con = openConnection();
                 //var cmd = con.CreateCommand();
                 //cmd.CommandText = string.Format("insert into products values (name='{0}',category='{1}',price={2})", product.Name, product.Category, product.Price);
                 //cmd.ExecuteNonQuery();
@@ -85,8 +85,7 @@ namespace WebApiSample.Controllers
 
                 string apiName = WebApiConfig.DefaultRouteName;
                 var response = Request.CreateResponse<Product>(HttpStatusCode.Created, product);
-                //var uri = Url.Link(apiName, new { id = product.Id });
-                var uri = Url.Link(apiName, new { id = 990 });
+                var uri = Url.Link(apiName, new { id = product.Id });
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
